@@ -8,11 +8,16 @@
     </head>
     <body>
         <h2>Enter User information below</h2>
-        <form align = "center" action = "/user">
+        <form align = "center" method = "post" action = "user/">
             <label for = "fullname">Full Name: </label>
-            <input id = fullname type = "text"> <br><br>
+            <input id = fullname name = "fullname"> <br><br>
+
             <label for = "username">Username: </label>
-            <input id = "username"><br><br>
+            <input id = "username" name = "username"><br><br>
+
+            <label for ="password">Password: </label>
+            <input id = "password" name = "password"><br><br>
+            
             <input type = "submit" value = "Submit">
         </form>
         
