@@ -102,7 +102,7 @@ public class UserDAO implements IUserDAO{
 		return null;
 	}
 	
-	public static void append(User user) throws IOException{
+	public static boolean append(User user) throws IOException{
 		FileInputStream input = new FileInputStream(filepath);
 		Workbook wb = WorkbookFactory.create(input);
 		Sheet sheet = wb.getSheetAt(0);
@@ -128,6 +128,8 @@ public class UserDAO implements IUserDAO{
 		wb.write(output);
 		wb.close();
 		output.close();
+		
+		return true;
 	}
 	
 	public User findUser(String username) {

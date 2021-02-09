@@ -52,15 +52,15 @@ public class UserServlet extends HttpServlet{
 		System.out.println(name + username + pass);
 		
 		try {
-			//UserDAO.append(user);
-			//System.out.println("works");
 			UserDAO.append(user);
 			
 		}
 		catch(Exception e) {
 			System.out.println(e);
 		}
-		response.getOutputStream(); //how to add information from a POST request to database?
+		response.getWriter().append("Name: "+name+
+				"\nUsername: "+ username+
+				"\nPassword: "+pass);
 		response.sendRedirect(request.getContextPath()+"/static/submitted.html");
 	}
 }
