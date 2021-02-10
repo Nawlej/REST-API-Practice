@@ -21,7 +21,7 @@ public class User {
 		
 		return ("\n" +"Name: "+this.name+ "\n"
 				+ "Username: " +this.username+ "\n"
-				+ "Password:" +this.password);
+				+ "Password:" +this.password+"\n");
 	}
 	
 	public void setName(String name) {

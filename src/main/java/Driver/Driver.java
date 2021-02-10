@@ -14,18 +14,18 @@ public class Driver {
 //		tx.commit();
 		
 
-		User user = new User("Tim","huehuehue","asdff");
-		try {
-			//UserDAO.append(user);
-			//System.out.println("works");
-			List<User> list = UserDAO.connect();
-			System.out.println(list.toString());
-		}
-		catch(Exception e) {
-			System.out.println(e);
-		}
+//		User user = new User("Tim","huehuehue","asdff");
+//		try {
+//			//UserDAO.append(user);
+//			//System.out.println("works");
+//			List<User> list = UserDAO.connect();
+//			System.out.println(list.toString());
+//		}
+//		catch(Exception e) {
+//			System.out.println(e);
+//		}
 		
-		
+		System.out.println(UserDAO.getInstance().findAll());
 		
 	}
 }

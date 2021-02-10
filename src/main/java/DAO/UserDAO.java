@@ -5,9 +5,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
@@ -28,7 +30,7 @@ public class UserDAO implements IUserDAO{
 	//currently needs to connect to an RDS to interact with DBeaver, running low on free tier hours for AWS RDS :(
 	//so instead I will have it communicate with an Excel file as practice.
 
-	private static HashMap<String, User> userMap = new HashMap<String, User>();
+	private static SortedMap<String, User> userMap = new TreeMap<String, User>();
 	private static File filepath = new File("D:\\Git\\demos\\test\\Book1.xlsx");
 	
 	private static UserDAO instance = new UserDAO();
@@ -37,14 +39,13 @@ public class UserDAO implements IUserDAO{
 	}
 	
 	private UserDAO() {
-		userMap.put("Jason", new User("Jason","Borne", "Cop"));
-		userMap.put("Hot", new User("Hot","Wheels", "Very hot"));
-		
+//		userMap.put("Jason", new User("Jason","Borne", "Cop"));
+//		userMap.put("Hot", new User("Hot","Wheels", "Very hot"));
+
 		try {
 			List<User> list = connect();
-			Iterator<User> ite = list.iterator();
-			while (ite.hasNext()) {
-				userMap.put(ite.next().getName(), ite.next());
+			for(int i=0; i<list.size();i++) {
+				userMap.put(list.get(i).getUsername(),list.get(i));
 			}
 			
 		}
@@ -113,7 +114,7 @@ public class UserDAO implements IUserDAO{
 		Row row = sheet.createRow(++rowCount);
 		Cell cell = row.createCell(colCount);
 		
-		String[] field = {user.getName(), user.getUsername(), user.getPassword()};
+		String[] field = {user.getUsername(), user.getName(), user.getPassword()};
 		
 		for (int i=0;i<field.length;i++) {
 			if (field[i] instanceof String) {
@@ -128,7 +129,7 @@ public class UserDAO implements IUserDAO{
 		wb.write(output);
 		wb.close();
 		output.close();
-		
+		userMap.put(user.getUsername(), user);
 		return true;
 	}
 	
@@ -143,18 +144,40 @@ public class UserDAO implements IUserDAO{
 		return user;
 	}
 	
-	public List<User> findall() {
-		Session s = HibernateUtil.getSession();
-		Transaction t = s.beginTransaction();
-		CriteriaBuilder cb = s.getCriteriaBuilder();
-		CriteriaQuery<User> query = cb.createQuery(User.class);
-		Root<User> root = query.from(User.class);
+	public SortedMap<String,User> findAll() {
 		
-		query.select(root);
-		List<User> users = s.createQuery(query).getResultList();
-		t.commit();
+		try {
+			List<User> list = connect();
+			for(int i=0; i<list.size();i++) {
+				userMap.put(list.get(i).getUsername(),list.get(i));
+			}
+			
+		}
+		catch(Exception e) {
+			System.out.println(e);
+		}
 		
-		return users;
+		return UserDAO.userMap;
 	}
+
+	@Override
+	public List<User> findall() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+	
+//	public List<User> findall() {
+//		Session s = HibernateUtil.getSession();
+//		Transaction t = s.beginTransaction();
+//		CriteriaBuilder cb = s.getCriteriaBuilder();
+//		CriteriaQuery<User> query = cb.createQuery(User.class);
+//		Root<User> root = query.from(User.class);
+//		
+//		query.select(root);
+//		List<User> users = s.createQuery(query).getResultList();
+//		t.commit();
+//		
+//		return users;
+//	}
 
 }
